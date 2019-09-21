@@ -4,7 +4,7 @@ Dynamically schedule your [Laravel tasks](https://laravel.com/docs/scheduling) u
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/koomai/laravel-scheduler.svg?style=flat-square)](https://packagist.org/packages/koomai/laravel-cli-scheduler)
 [![Build Status](https://travis-ci.org/koomai/laravel-cli-scheduler.svg?branch=master)](https://travis-ci.org/koomai/laravel-cli-scheduler)
-[![StyleCI](https://github.styleci.io/repos/177488391/shield?branch=master)](https://github.styleci.io/repos/177488391)
+[![StyleCI](https://github.styleci.io/repos/209784774/shield?branch=master)](https://github.styleci.io/repos/209784774)
 
 Laravel Scheduler allows you to add, view and remove scheduled tasks in a database via artisan commands. This is particularly useful when you want to schedule tasks without having to redeploy code. 
 
