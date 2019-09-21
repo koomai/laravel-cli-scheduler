@@ -1,0 +1,138 @@
+<?php
+
+namespace Koomai\CliScheduler\Repositories\Cache;
+
+use Koomai\CliScheduler\ScheduledTask;
+use Illuminate\Cache\Repository as Cache;
+use Illuminate\Database\Eloquent\Collection;
+use Koomai\CliScheduler\Repositories\ScheduledTaskRepository;
+use Koomai\CliScheduler\Contracts\ScheduledTaskRepositoryInterface;
+
+class CacheScheduledTaskRepository implements ScheduledTaskRepositoryInterface
+{
+    /**
+     * @var \Koomai\CliScheduler\Repositories\ScheduledTaskRepository
+     */
+    private $repository;
+
+    /**
+     * @var \Illuminate\Cache\Repository
+     */
+    private $cache;
+
+    /**
+     * CacheScheduledTaskRepository constructor.
+     *
+     * @param \Koomai\CliScheduler\Repositories\ScheduledTaskRepository $scheduledTaskRepository
+     * @param \Illuminate\Cache\Repository $cache
+     */
+    public function __construct(ScheduledTaskRepository $scheduledTaskRepository, Cache $cache)
+    {
+        $this->repository = $scheduledTaskRepository;
+        $this->cache = $cache;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function all(): Collection
+    {
+        return $this->cache->rememberForever('scheduled_tasks.all', function () {
+            return $this->repository->all();
+        });
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return \Koomai\CliScheduler\ScheduledTask|null
+     */
+    public function find(int $id): ?ScheduledTask
+    {
+        return $this->cache->rememberForever("scheduled_tasks.id.{$id}", function () use ($id) {
+            return $this->repository->find($id);
+        });
+    }
+
+    /**
+     * @param array $ids
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|null
+     */
+    public function findByIds(array $ids): ?Collection
+    {
+        return $this->repository->findByIds($ids);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return \Koomai\CliScheduler\ScheduledTask
+     */
+    public function create(array $data): ScheduledTask
+    {
+        $scheduledTask = $this->repository->create($data);
+        $this->invalidateCache();
+
+        return $scheduledTask;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return int
+     */
+    public function delete(int $id): int
+    {
+        $count = $this->repository->delete($id);
+        $this->invalidateCache($id);
+
+        return $count;
+    }
+
+    /**
+     * Removes relevant cached data.
+     *
+     * @param int $id
+     */
+    private function invalidateCache(int $id = null): void
+    {
+        $this->cache->forget('scheduled_tasks.all');
+
+        if ($id) {
+            $this->cache->forget("scheduled_tasks.id.{$id}");
+        }
+    }
+
+    /**
+     * Cache only if the table exists
+     * This prevents a false value from being cached if the migration hasn't run
+     *
+     * @return bool
+     */
+    public function hasTable(): bool
+    {
+        $key = 'scheduled_tasks.has_table';
+
+        if (!$this->cache->get($key)) {
+            $this->cache->forget($key);
+
+            return $this->cache->rememberForever($key, function () {
+                return $this->repository->hasTable();
+            });
+        }
+
+        return $this->cache->get($key);
+    }
+
+    /**
+     * @param $task
+     * @param $cron
+     *
+     * @return \Koomai\CliScheduler\ScheduledTask|null
+     */
+    public function findByTaskAndCronSchedule($task, $cron)
+    {
+        return $this->repository->findByTaskAndCronSchedule($task, $cron);
+    }
+}
