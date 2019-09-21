@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Koomai\\Scheduler\\": "src"
+            "Koomai\\CliScheduler\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Koomai\\Scheduler\\Tests\\": "tests"
+            "Koomai\\CliScheduler\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -51,7 +51,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Koomai\\Scheduler\\SchedulerServiceProvider"
+                "Koomai\\CliScheduler\\CliSchedulerServiceProvider"
             ]
         }
     }
