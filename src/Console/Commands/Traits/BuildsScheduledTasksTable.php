@@ -3,6 +3,7 @@
 namespace Koomai\CliScheduler\Console\Commands\Traits;
 
 use Koomai\CliScheduler\ScheduledTask;
+use Symfony\Component\Console\Helper\TableSeparator;
 
 trait BuildsScheduledTasksTable
 {
@@ -12,16 +13,10 @@ trait BuildsScheduledTasksTable
         'Task',
         'Description',
         'Cron',
-        'Timezone',
         'Environments',
         'Queue',
-        'Without Overlapping',
-        'On One Server',
-        'Run in Background',
-        'In Maintenance Mode',
-        'Output Path',
-        'Append Output',
-        'Output Email',
+        'Output',
+        'Other',
     ];
 
     /**
@@ -36,27 +31,46 @@ trait BuildsScheduledTasksTable
             $tasks = collect([$tasks]);
         }
 
+        $separator = new TableSeparator();
         $attributes = $tasks
-                        ->map(function ($task) {
-                            return [
-                               $task->id,
-                               $task->type,
-                               $task->task,
-                               $task->description ?? 'N/A',
-                               $task->cron,
-                               $task->timezone ?? config('app.timezone'),
-                               implode(',', $task->environments) ?: 'None',
-                               $task->queue ?? 'N/A',
-                               $task->without_overlapping ? 'Yes' : 'No',
-                               $task->one_one_server ? 'Yes' : 'No',
-                               $task->run_in_background ? 'Yes' : 'No',
-                               $task->even_in_maintenance_mode ? 'Yes' : 'No',
-                               $task->output_path ?: 'N/A',
-                               $task->append_output ? 'Yes' : 'No',
-                               $task->output_email ?? 'N/A',
-                           ];
-                        });
+            ->flatMap(function ($task) use ($separator) {
+                return [
+                    [
+                        $task->id,
+                        $task->type,
+                        $task->task,
+                        $task->description ?? 'N/A',
+                        $task->cron,
+                        implode(',', $task->environments) ?: 'N/A',
+                        $task->queue ?? 'N/A',
+                        $this->listOutputOptions($task),
+                        $this->listOtherOptions($task),
+                    ],
+                    $separator,
+                ];
+            });
+
+        // Remove the last separator
+        $attributes->pop();
 
         $this->table($this->headers, $attributes, 'box');
+    }
+
+    private function listOutputOptions($task)
+    {
+        return
+            'Output Path: ' . ($task->output_path ?: '<fg=yellow>N/A</>') . "\n" .
+            'Append Output: ' . ($task->append_output ? '<fg=green>Yes</>' : '<fg=red>No</>') . "\n" .
+            'Output Email: ' . ($task->output_email ?? '<fg=yellow>N/A</>');
+    }
+
+    private function listOtherOptions($task)
+    {
+        return
+            'Timezone: <fg=yellow>' . ($task->timezone ?? config('app.timezone')) . "</>\n" .
+            'Without Overlapping: ' . ($task->without_overlapping ? '<fg=green>Yes</>' : '<fg=red>No</>') . "\n" .
+            'On One Server: ' . ($task->one_one_server ? '<fg=green>Yes</>' : '<fg=red>No</>') . "\n" .
+            'Run in Background: ' . ($task->run_in_background ? '<fg=green>Yes</>' : '<fg=red>No</>') . "\n" .
+            'In Maintenance Mode: ' . ($task->in_maintenance_mode ? '<fg=green>Yes</>' : '<fg=red>No</>');
     }
 }
