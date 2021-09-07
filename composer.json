@@ -21,8 +21,7 @@
         "dragonmantank/cron-expression": "^3.1",
         "illuminate/console": "^8.0",
         "illuminate/contracts": "^8.0",
-        "illuminate/database": "^8.0",
-        "spatie/laravel-package-tools": "^1.4.3"
+        "illuminate/database": "^8.0"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
@@ -40,12 +39,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Koomai\\CliScheduler\\Tests\\": "tests"
+            "Koomai\\CliScheduler\\Tests\\": "tests",
+            "Koomai\\CliScheduler\\Tests\\Factories\\": "tests/factories"
         }
     },
     "scripts": {
         "psalm": "vendor/bin/psalm",
-        "test": "./vendor/bin/testbench package:test --parallel --no-coverage",
+        "test": "./vendor/bin/testbench package:test --no-coverage",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
         "fix": "vendor/bin/php-cs-fixer fix"
     },
@@ -55,7 +55,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "CliSchedulerServiceProvider"
+                "Koomai\\CliScheduler\\CliSchedulerServiceProvider"
             ]
         }
     },

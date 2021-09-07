@@ -3,6 +3,7 @@
 namespace Koomai\CliScheduler;
 
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\ServiceProvider;
 use Koomai\CliScheduler\Console\Commands\ScheduleAddCommand;
 use Koomai\CliScheduler\Console\Commands\ScheduleDeleteCommand;
 use Koomai\CliScheduler\Console\Commands\ScheduleDueCommand;
@@ -14,40 +15,39 @@ use Koomai\CliScheduler\Events\CompletedScheduledTask;
 use Koomai\CliScheduler\Events\StartingScheduledTask;
 use Koomai\CliScheduler\Repositories\Cache\CacheScheduledTaskRepository;
 use Koomai\CliScheduler\Repositories\ScheduledTaskRepository;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class CliSchedulerServiceProvider extends PackageServiceProvider
+class CliSchedulerServiceProvider extends ServiceProvider
 {
-    public function configurePackage(Package $package): void
+    public function boot()
     {
-        $package
-            ->name('laravel-cli-scheduler')
-            ->hasConfigFile()
-            ->hasTranslations()
-            ->hasMigration('2019_03_16_142951_create_scheduled_tasks_table')
-            ->hasCommands([
+        // Config
+        $this->publishes([
+            __DIR__.'/../config/cli-scheduler.php.php' => config_path('cli-scheduler.php'),
+        ]);
+
+        // Migrations
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        // Translations
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'cli-scheduler');
+
+        // Scheduler Commands
+        if ($this->app->runningInConsole()) {
+            $this->commands([
                 ScheduleDueCommand::class,
                 ScheduleAddCommand::class,
                 ScheduleShowCommand::class,
                 ScheduleDeleteCommand::class,
                 ScheduleListCommand::class,
             ]);
-    }
 
-    public function boot()
-    {
-        parent::boot();
-
-        $repository = resolve(ScheduledTaskRepositoryInterface::class);
-        if ($repository->hasTable()) {
-            $this->scheduleTasks($repository->all());
+            $repository = resolve(ScheduledTaskRepositoryInterface::class);
+            if ($repository->hasTable()) {
+                $this->scheduleTasks($repository->all());
+            }
         }
     }
 
-    /**
-     * @throws \Spatie\LaravelPackageTools\Exceptions\InvalidPackage
-     */
     public function register()
     {
         parent::register();
