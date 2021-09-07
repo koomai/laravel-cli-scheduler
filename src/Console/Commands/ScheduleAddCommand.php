@@ -118,7 +118,7 @@ class ScheduleAddCommand extends ScheduleCommand
      */
     private function handleWithPrompts()
     {
-        $this->type = $this->choice(trans('scheduler::questions.type'), TaskType::values());
+        $this->type = $this->choice(trans('scheduler::questions.type'), TaskType::getValues());
 
         $this->task = $this->askForTask();
 
