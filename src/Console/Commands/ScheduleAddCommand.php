@@ -34,7 +34,7 @@ class ScheduleAddCommand extends ScheduleCommand
     private ?string $taskDescription;
     private ?string $cron;
     private ?string $timezone;
-    private ?string $queue;
+    private ?string $queue = null;
     private array $environments;
     private ?string $outputPath;
     private ?string $outputEmail;
