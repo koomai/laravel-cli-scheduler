@@ -21,23 +21,23 @@ trait ValidatesInput
         ] = $options;
 
         if (! $this->isValidTaskType($type)) {
-            $this->errors[] = trans('scheduler::messages.invalid_task_type', ['type' => $type]);
+            $this->errors[] = trans('cli-scheduler::messages.invalid_task_type', ['type' => $type]);
         }
 
         if (strtolower($type) === strtolower(TaskType::COMMAND) && ! $this->isValidArtisanCommand($task)) {
-            $this->errors[] = trans('scheduler::messages.invalid_artisan_command', ['command' => $task]);
+            $this->errors[] = trans('cli-scheduler::messages.invalid_artisan_command', ['command' => $task]);
         }
 
         if (strtolower($type) === strtolower(TaskType::JOB) && ! $this->isValidJob($task)) {
-            $this->errors[] = trans('scheduler::messages.invalid_job_class', ['job' => $task]);
+            $this->errors[] = trans('cli-scheduler::messages.invalid_job_class', ['job' => $task]);
         }
 
         if (! $this->isValidCronExpression($cron)) {
-            $this->errors[] = trans('scheduler::messages.invalid_cron_expression', ['cron' => $cron]);
+            $this->errors[] = trans('cli-scheduler::messages.invalid_cron_expression', ['cron' => $cron]);
         }
 
         if ($timezone !== null && ! $this->isValidTimezone($timezone)) {
-            $this->errors[] = trans('scheduler::messages.invalid_timezone', ['timezone' => $timezone]);
+            $this->errors[] = trans('cli-scheduler::messages.invalid_timezone', ['timezone' => $timezone]);
         }
 
         return empty($this->errors);

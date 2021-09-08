@@ -99,17 +99,17 @@ class ScheduleAddCommand extends ScheduleCommand
      */
     private function handleWithPrompts(): int
     {
-        $this->type = $this->choice(trans('scheduler::questions.type'), TaskType::getValues());
+        $this->type = $this->choice(trans('cli-scheduler::questions.type'), TaskType::getValues());
 
         $this->task = $this->askForTask();
 
         if (! $this->task) {
-            $this->error(trans('scheduler::messages.invalid_task_type', ['type' => $this->type]));
+            $this->error(trans('cli-scheduler::messages.invalid_task_type', ['type' => $this->type]));
 
             return 1;
         }
 
-        $this->taskDescription = $this->ask(trans('scheduler::questions.description'));
+        $this->taskDescription = $this->ask(trans('cli-scheduler::questions.description'));
         $this->cron = $this->askForCronExpression();
         $this->timezone = $this->askForTimezone();
         $this->environments = config('scheduler.environments') ?: $this->askForEnvironments();
@@ -146,11 +146,11 @@ class ScheduleAddCommand extends ScheduleCommand
 
     private function askForArtisanCommandTask(): string
     {
-        $command = $this->anticipate(trans('scheduler::questions.task.artisan'), array_keys(Artisan::all()));
+        $command = $this->anticipate(trans('cli-scheduler::questions.task.artisan'), array_keys(Artisan::all()));
 
         while (! $this->isValidArtisanCommand($command)) {
-            $this->warn(trans('scheduler::messages.invalid_artisan_command', ['command' => $command]));
-            $command = $this->anticipate(trans('scheduler::questions.task.artisan'), array_keys(Artisan::all()));
+            $this->warn(trans('cli-scheduler::messages.invalid_artisan_command', ['command' => $command]));
+            $command = $this->anticipate(trans('cli-scheduler::questions.task.artisan'), array_keys(Artisan::all()));
         }
 
         return $command;
@@ -158,25 +158,25 @@ class ScheduleAddCommand extends ScheduleCommand
 
     private function askForJobTask(): string
     {
-        $job = $this->ask(trans('scheduler::questions.task.job'));
+        $job = $this->ask(trans('cli-scheduler::questions.task.job'));
 
         while (! $this->isValidJob($job)) {
-            $this->warn(trans('scheduler::messages.invalid_job_class', ['job' => $job]));
-            $job = $this->ask(trans('scheduler::questions.task.job'));
+            $this->warn(trans('cli-scheduler::messages.invalid_job_class', ['job' => $job]));
+            $job = $this->ask(trans('cli-scheduler::questions.task.job'));
         }
 
-        $this->queue = $this->ask(trans('scheduler::questions.queue'));
+        $this->queue = $this->ask(trans('cli-scheduler::questions.queue'));
 
         return $job;
     }
 
     private function askForCronExpression(): string
     {
-        $cron = $this->ask(trans('scheduler::questions.cron'));
+        $cron = $this->ask(trans('cli-scheduler::questions.cron'));
 
         while (! $this->isValidCronExpression($cron)) {
-            $this->warn(trans('scheduler::messages.invalid_cron_expression', ['cron' => $cron]));
-            $cron = $this->ask(trans('scheduler::questions.cron'));
+            $this->warn(trans('cli-scheduler::messages.invalid_cron_expression', ['cron' => $cron]));
+            $cron = $this->ask(trans('cli-scheduler::questions.cron'));
         }
 
         return $cron;
@@ -184,11 +184,11 @@ class ScheduleAddCommand extends ScheduleCommand
 
     private function askForTimezone(): ?string
     {
-        $timezone = $this->anticipate(trans('scheduler::questions.timezone'), DateTimeZone::listIdentifiers());
+        $timezone = $this->anticipate(trans('cli-scheduler::questions.timezone'), DateTimeZone::listIdentifiers());
 
         while ($timezone !== null && ! $this->isValidTimezone($timezone)) {
-            $this->warn(trans('scheduler::messages.invalid_timezone', ['timezone' => $timezone]));
-            $timezone = $this->anticipate(trans('scheduler::questions.timezone'), DateTimeZone::listIdentifiers());
+            $this->warn(trans('cli-scheduler::messages.invalid_timezone', ['timezone' => $timezone]));
+            $timezone = $this->anticipate(trans('cli-scheduler::questions.timezone'), DateTimeZone::listIdentifiers());
         }
 
         return $timezone;
@@ -196,22 +196,22 @@ class ScheduleAddCommand extends ScheduleCommand
 
     private function askForEnvironments(): array
     {
-        $environments = $this->ask(trans('scheduler::questions.environments'));
+        $environments = $this->ask(trans('cli-scheduler::questions.environments'));
 
         return $environments === null ? [] : explode(',', $environments);
     }
 
     private function askIfTaskShouldRunWithoutOverlapping(): bool
     {
-        return $this->choice(trans('scheduler::questions.overlapping'), ['No', 'Yes']) === 'Yes';
+        return $this->choice(trans('cli-scheduler::questions.overlapping'), ['No', 'Yes']) === 'Yes';
     }
 
     private function askIfTaskShouldRunOnOneServer(): bool
     {
-        $choice = $this->choice(trans('scheduler::questions.one_server'), ['No', 'Yes']) === 'Yes';
+        $choice = $this->choice(trans('cli-scheduler::questions.one_server'), ['No', 'Yes']) === 'Yes';
 
         if ($choice) {
-            $this->warn(trans('scheduler::messages.cache_driver_alert'));
+            $this->warn(trans('cli-scheduler::messages.cache_driver_alert'));
         }
 
         return $choice;
@@ -219,19 +219,19 @@ class ScheduleAddCommand extends ScheduleCommand
 
     private function askIfTaskShouldRunInMaintenanceMode(): bool
     {
-        return $this->choice(trans('scheduler::questions.maintenance'), ['No', 'Yes']) === 'Yes';
+        return $this->choice(trans('cli-scheduler::questions.maintenance'), ['No', 'Yes']) === 'Yes';
     }
 
     private function askIfTaskShouldRunInBackground(): bool
     {
-        return $this->choice(trans('scheduler::questions.background'), ['No', 'Yes']) === 'Yes';
+        return $this->choice(trans('cli-scheduler::questions.background'), ['No', 'Yes']) === 'Yes';
     }
 
     private function askForOutputFilePath(): ?string
     {
-        if ($this->type !== TaskType::JOB && $this->confirm(trans('scheduler::questions.confirm_output_path'))) {
-            $outputFilePath = $this->ask(trans('scheduler::questions.output_path'));
-            $this->appendOutput = $this->choice(trans('scheduler::questions.append_output'), ['No', 'Yes']) === 'Yes';
+        if ($this->type !== TaskType::JOB && $this->confirm(trans('cli-scheduler::questions.confirm_output_path'))) {
+            $outputFilePath = $this->ask(trans('cli-scheduler::questions.output_path'));
+            $this->appendOutput = $this->choice(trans('cli-scheduler::questions.append_output'), ['No', 'Yes']) === 'Yes';
 
             return $outputFilePath;
         }
@@ -242,7 +242,7 @@ class ScheduleAddCommand extends ScheduleCommand
     private function askForOutputEmail(): ?string
     {
         if ($this->type !== TaskType::JOB) {
-            return $this->ask(trans('scheduler::questions.output_email'));
+            return $this->ask(trans('cli-scheduler::questions.output_email'));
         }
 
         return null;
