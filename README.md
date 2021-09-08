@@ -2,11 +2,11 @@
 
 Dynamically schedule your [Laravel tasks](https://laravel.com/docs/scheduling) using artisan commands.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/koomai/laravel-cli-scheduler.svg?style=flat-square)](https://packagist.org/packages/koomai/laravel-cli-scheduler)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/koomai/laravel-cli-scheduler/PHPUnit?label=tests)](https://github.com/koomai/laravel-cli-scheduler/actions/workflows/run-tests.yml?query=branch%3Amain)
-[![GitHub Psalm Action Status](https://img.shields.io/github/workflow/status/koomai/laravel-cli-scheduler/Psalm?label=psalm)](https://github.com/koomai/laravel-cli-scheduler/actions/workflows/psalm.yml?query=branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/koomai/laravel-cli-scheduler/PHP%20CS%20Fixer?label=code%20style)](https://github.com/koomai/laravel-cli-scheduler/actions/workflows/php-cs-fixer.yml?query=branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/koomai/laravel-cli-scheduler.svg?style=flat-square)](https://packagist.org/packages/koomai/laravel-cli-scheduler)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/koomai/laravel-cli-scheduler?style=flat-square)](https://packagist.org/packages/koomai/laravel-cli-scheduler)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/koomai/laravel-cli-scheduler/PHPUnit?label=tests&style=flat-square)](https://github.com/koomai/laravel-cli-scheduler/actions/workflows/run-tests.yml?query=branch%3Amain)
+[![GitHub Psalm Action Status](https://img.shields.io/github/workflow/status/koomai/laravel-cli-scheduler/Psalm?label=psalm&style=flat-square)](https://github.com/koomai/laravel-cli-scheduler/actions/workflows/psalm.yml?query=branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/koomai/laravel-cli-scheduler/PHP%20CS%20Fixer?label=code%20style&style=flat-square)](https://github.com/koomai/laravel-cli-scheduler/actions/workflows/php-cs-fixer.yml?query=branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/koomai/laravel-cli-scheduler?style=flat-square)](https://packagist.org/packages/koomai/laravel-cli-scheduler)
 
 Laravel Scheduler allows you to add, view and remove scheduled tasks in a database via artisan commands. This is particularly useful when you want to schedule tasks without having to redeploy code.
 
@@ -22,13 +22,13 @@ composer require koomai/laravel-cli-scheduler
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="Koomai\CliScheduler\LaravelCliSchedulerServiceProvider" --tag="laravel-cli-scheduler-migrations"
+php artisan vendor:publish --provider="Koomai\CliScheduler\CliSchedulerServiceProvider" --tag="laravel-cli-scheduler-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Koomai\CliScheduler\LaravelCliSchedulerServiceProvider" --tag="laravel-cli-scheduler-config"
+php artisan vendor:publish --provider="Koomai\CliScheduler\CliSchedulerServiceProvider" --tag="laravel-cli-scheduler-config"
 ```
 
 This is the contents of the published config file:
