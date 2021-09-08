@@ -14,13 +14,13 @@ class CreateScheduledTasksTable extends Migration
     public function up()
     {
         Schema::create(config('scheduler.table'), function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('type');
             $table->string('task');
             $table->string('description', 30)->nullable();
             $table->string('cron');
             $table->string('timezone')->nullable();
-            $table->text('environments')->nullable();
+            $table->json('environments')->nullable();
             $table->string('queue')->nullable();
             $table->boolean('without_overlapping')->default(0);
             $table->boolean('on_one_server')->default(0);
