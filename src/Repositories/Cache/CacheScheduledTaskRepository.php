@@ -2,11 +2,11 @@
 
 namespace Koomai\CliScheduler\Repositories\Cache;
 
-use Koomai\CliScheduler\ScheduledTask;
 use Illuminate\Cache\Repository as Cache;
 use Illuminate\Database\Eloquent\Collection;
-use Koomai\CliScheduler\Repositories\ScheduledTaskRepository;
 use Koomai\CliScheduler\Contracts\ScheduledTaskRepositoryInterface;
+use Koomai\CliScheduler\Repositories\ScheduledTaskRepository;
+use Koomai\CliScheduler\ScheduledTask;
 
 class CacheScheduledTaskRepository implements ScheduledTaskRepositoryInterface
 {
@@ -71,7 +71,7 @@ class CacheScheduledTaskRepository implements ScheduledTaskRepositoryInterface
     {
         $key = 'scheduled_tasks.has_table';
 
-        if (!$this->cache->get($key)) {
+        if (! $this->cache->get($key)) {
             $this->cache->forget($key);
 
             return $this->cache->rememberForever($key, function () {

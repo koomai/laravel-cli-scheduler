@@ -2,8 +2,8 @@
 
 namespace Koomai\CliScheduler\Contracts;
 
-use Koomai\CliScheduler\ScheduledTask;
 use Illuminate\Database\Eloquent\Collection;
+use Koomai\CliScheduler\ScheduledTask;
 
 interface ScheduledTaskRepositoryInterface
 {

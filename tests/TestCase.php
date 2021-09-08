@@ -2,8 +2,8 @@
 
 namespace Koomai\CliScheduler\Tests;
 
-use Orchestra\Testbench\TestCase as Orchestra;
 use Koomai\CliScheduler\CliSchedulerServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {

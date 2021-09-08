@@ -4,15 +4,15 @@ namespace Koomai\CliScheduler\Console\Commands;
 
 use DateTimeZone;
 use Illuminate\Support\Facades\Artisan;
+use Koomai\CliScheduler\Console\Commands\Traits\BuildsScheduledTasksTable;
 use Koomai\CliScheduler\Console\Commands\Traits\ValidatesInput;
 use Koomai\CliScheduler\Enums\TaskType;
-use Koomai\CliScheduler\Console\Commands\Traits\BuildsScheduledTasksTable;
 use Koomai\CliScheduler\ScheduledTask;
 
 class ScheduleAddCommand extends ScheduleCommand
 {
-    use BuildsScheduledTasksTable,
-        ValidatesInput;
+    use BuildsScheduledTasksTable;
+    use ValidatesInput;
 
     /**
      * The name and signature of the console command.
@@ -94,7 +94,8 @@ class ScheduleAddCommand extends ScheduleCommand
         $this->cron = $this->option('cron');
         $this->timezone = $this->option('timezone');
         $this->environments = config('scheduler.environments') ?:
-            ($this->option('environments') === null
+            (
+                $this->option('environments') === null
                 ? []
                 : explode(',', $this->option('environments'))
             );
@@ -122,7 +123,7 @@ class ScheduleAddCommand extends ScheduleCommand
 
         $this->task = $this->askForTask();
 
-        if (!$this->task) {
+        if (! $this->task) {
             $this->error(trans('scheduler::messages.invalid_task_type', ['type' => $this->type]));
 
             return 1;
@@ -148,9 +149,11 @@ class ScheduleAddCommand extends ScheduleCommand
         switch ($this->type) {
             case TaskType::COMMAND:
                 $task = $this->askForArtisanCommandTask();
+
                 break;
             case TaskType::JOB:
                 $task = $this->askForJobTask();
+
                 break;
             default:
                 $task = null;

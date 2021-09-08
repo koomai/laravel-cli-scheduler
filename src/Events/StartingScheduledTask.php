@@ -8,7 +8,8 @@ use Koomai\CliScheduler\ScheduledTask;
 
 class StartingScheduledTask
 {
-    use Dispatchable, SerializesModels;
+    use Dispatchable;
+    use SerializesModels;
 
     /**
      * @var \Koomai\CliScheduler\ScheduledTask

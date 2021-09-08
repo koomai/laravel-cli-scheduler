@@ -70,9 +70,11 @@ class CliSchedulerServiceProvider extends ServiceProvider
                         } else {
                             $scheduledEvent = $schedule->job(new $task->task());
                         }
+
                         break;
                     case TaskType::COMMAND:
                         $scheduledEvent = $schedule->command($task->task);
+
                         break;
                     default:
                         app('log')->alert("{$task->type} is not a valid scheduled task type");

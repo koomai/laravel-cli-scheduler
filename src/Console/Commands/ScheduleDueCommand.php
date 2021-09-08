@@ -2,10 +2,10 @@
 
 namespace Koomai\CliScheduler\Console\Commands;
 
-use Illuminate\Support\Str;
+use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Console\Scheduling\CallbackEvent;
+use Illuminate\Support\Str;
 use Koomai\CliScheduler\Contracts\ScheduledTaskRepositoryInterface;
 
 class ScheduleDueCommand extends ScheduleCommand
@@ -72,7 +72,7 @@ class ScheduleDueCommand extends ScheduleCommand
                 'id' => $scheduledTask ? $scheduledTask->id : 'N/A',
                 'type' => $scheduledTask ? $scheduledTask->type : 'Console Kernel',
                 'task' => $scheduledTask ? $scheduledTask->task : $this->parseTaskFromEvent($event),
-                'description'   => $scheduledTask ? $scheduledTask->description : $event->description,
+                'description' => $scheduledTask ? $scheduledTask->description : $event->description,
                 'cron' => $event->expression,
                 'due' => $event->nextRunDate()->format(config('scheduler.date_format')),
                 'environments' => implode(', ', $event->environments),
