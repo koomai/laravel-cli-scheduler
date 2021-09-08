@@ -7,15 +7,9 @@ use Koomai\CliScheduler\Tests\TestCase;
 
 class ScheduleAddCommandWithPromptAndDefaultConfigurationTest extends TestCase
 {
-    /**
-     * Define environment setup.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
     protected function getEnvironmentSetUp($app)
     {
-//         $app['config']->set('scheduler.environments', ['production']);
+        // $app['config']->set('scheduler.environments', ['production']);
     }
 
     /**

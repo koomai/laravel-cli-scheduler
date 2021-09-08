@@ -2,11 +2,14 @@
 
 namespace Koomai\CliScheduler\Tests;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Koomai\CliScheduler\CliSchedulerServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
+    use RefreshDatabase;
+
     protected function getPackageProviders($app)
     {
         return [
@@ -14,16 +17,12 @@ class TestCase extends Orchestra
         ];
     }
 
-    /**
-     * Define environment setup.
-     *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
-     */
     protected function defineEnvironment($app)
     {
         // Setup default database as testing to use sqlite :memory:
         $app['config']->set('database.default', 'testing');
+        // Set table name
+        $app['config']->set('scheduler.table', 'scheduled_tasks');
     }
 
     /**
@@ -34,7 +33,5 @@ class TestCase extends Orchestra
     protected function defineDatabaseMigrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-
-        $this->artisan('migrate', ['--database' => 'testing'])->run();
     }
 }
