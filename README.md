@@ -13,29 +13,16 @@ Laravel Scheduler allows you to add, view and remove scheduled tasks in a databa
 
 ## Installation
 
-You can install the package via composer:
+Install the package via composer:
 
 ```bash
 composer require koomai/laravel-cli-scheduler
 ```
 
-You can publish and run the migrations with:
+You will need to publish the config file to customise the table name and/or setup default values for some options.
 
 ```bash
-php artisan vendor:publish --provider="Koomai\CliScheduler\CliSchedulerServiceProvider" --tag="laravel-cli-scheduler-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-```bash
-php artisan vendor:publish --provider="Koomai\CliScheduler\CliSchedulerServiceProvider" --tag="laravel-cli-scheduler-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
+php artisan vendor:publish -tag="cli-scheduler-config"
 ```
 
 ## Usage
@@ -44,11 +31,9 @@ return [
 
 `php artisan schedule:add`
 
-### List scheduled tasks (in database)
+### List scheduled tasks (in the database)
 
-`php artisan schedule:list-all`
-
-*Note*: This command has been renamed from `list` to `list-all` to avoid collision with the framework's `schedule:list` command.
+`php artisan schedule:list-tasks`
 
 ### Show/Delete a scheduled task (in database)
 
@@ -81,6 +66,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Sid K](https://github.com/koomai)
+- [Spatie Package Skeleton](https://github.com/spatie/package-skeleton-laravel)  
 - [All Contributors](../../contributors)
 
 ## License
