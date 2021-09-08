@@ -22,8 +22,8 @@ class CliSchedulerServiceProvider extends ServiceProvider
     {
         // Config
         $this->publishes([
-            __DIR__.'/../config/cli-scheduler.php.php' => config_path('cli-scheduler.php'),
-        ]);
+            __DIR__.'/../config/cli-scheduler.php' => config_path('cli-scheduler.php'),
+        ], 'cli-scheduler-config');
 
         // Migrations
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
