@@ -52,6 +52,6 @@ class ScheduleAddCommandWithPromptAndDefaultConfigurationTest extends TestCase
                 'output_email' => 'test@test.com',
             ];
 
-        $this->assertDatabaseHas(config('scheduler.table'), $expectedData);
+        $this->assertDatabaseHas(config('cli-scheduler.table'), $expectedData);
     }
 }

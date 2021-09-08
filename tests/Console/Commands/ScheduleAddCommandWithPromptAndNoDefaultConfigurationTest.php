@@ -73,6 +73,6 @@ class ScheduleAddCommandWithPromptAndNoDefaultConfigurationTest extends TestCase
             ->expectsQuestion(trans('cli-scheduler::questions.output_email'), $data['output_email'])
             ->assertExitCode(0);
 
-        $this->assertDatabaseHas(config('scheduler.table'), $data);
+        $this->assertDatabaseHas(config('cli-scheduler.table'), $data);
     }
 }

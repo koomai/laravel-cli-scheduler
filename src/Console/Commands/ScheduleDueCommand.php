@@ -54,7 +54,7 @@ class ScheduleDueCommand extends ScheduleCommand
                 'task' => $scheduledTask ? $scheduledTask->task : $this->parseTaskFromEvent($event),
                 'description' => $scheduledTask ? $scheduledTask->description : $event->description,
                 'cron' => $event->expression,
-                'due' => $event->nextRunDate()->format(config('scheduler.date_format')),
+                'due' => $event->nextRunDate()->format(config('cli-scheduler.date_format')),
                 'environments' => implode(', ', $event->environments),
             ];
         })->toArray();

@@ -41,6 +41,6 @@ class ScheduledTaskRepository implements ScheduledTaskRepositoryInterface
 
     public function hasTable(): bool
     {
-        return Schema::hasTable(config('scheduler.table'));
+        return Schema::hasTable(config('cli-scheduler.table'));
     }
 }

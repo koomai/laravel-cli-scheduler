@@ -74,19 +74,19 @@ class ScheduleAddCommand extends ScheduleCommand
         $this->taskDescription = $this->option('description');
         $this->cron = $this->option('cron');
         $this->timezone = $this->option('timezone');
-        $this->environments = config('scheduler.environments') ?:
+        $this->environments = config('cli-scheduler.environments') ?:
             (
                 $this->option('environments') === null
                 ? []
                 : explode(',', $this->option('environments'))
             );
-        $this->withoutOverlapping = config('scheduler.without_overlapping') ?? $this->option('without-overlapping');
-        $this->onOneServer = config('scheduler.on_one_server') ?? $this->option('on-one-server');
-        $this->inMaintenanceMode = config('scheduler.in_maintenance_mode') ?? $this->option('in-maintenance-mode');
-        $this->runInBackground = config('scheduler.run_in_background') ?? $this->option('run-in-background');
-        $this->outputPath = config('scheduler.output_path') ?? $this->option('output-path');
+        $this->withoutOverlapping = config('cli-scheduler.without_overlapping') ?? $this->option('without-overlapping');
+        $this->onOneServer = config('cli-scheduler.on_one_server') ?? $this->option('on-one-server');
+        $this->inMaintenanceMode = config('cli-scheduler.in_maintenance_mode') ?? $this->option('in-maintenance-mode');
+        $this->runInBackground = config('cli-scheduler.run_in_background') ?? $this->option('run-in-background');
+        $this->outputPath = config('cli-scheduler.output_path') ?? $this->option('output-path');
         $this->appendOutput = $this->option('append-output');
-        $this->outputEmail = config('scheduler.output_email') ?? $this->option('output-email');
+        $this->outputEmail = config('cli-scheduler.output_email') ?? $this->option('output-email');
 
         $scheduledTask = $this->createTask();
         $this->generateTable($scheduledTask);
@@ -112,13 +112,13 @@ class ScheduleAddCommand extends ScheduleCommand
         $this->taskDescription = $this->ask(trans('cli-scheduler::questions.description'));
         $this->cron = $this->askForCronExpression();
         $this->timezone = $this->askForTimezone();
-        $this->environments = config('scheduler.environments') ?: $this->askForEnvironments();
-        $this->withoutOverlapping = config('scheduler.without_overlapping') ?? $this->askIfTaskShouldRunWithoutOverlapping();
-        $this->onOneServer = config('scheduler.on_one_server') ?? $this->askIfTaskShouldRunOnOneServer();
-        $this->inMaintenanceMode = config('scheduler.in_maintenance_mode') ?? $this->askIfTaskShouldRunInMaintenanceMode();
-        $this->runInBackground = config('scheduler.run_in_background') ?? $this->askIfTaskShouldRunInBackground();
-        $this->outputPath = config('scheduler.output_path') ?? $this->askForOutputFilePath();
-        $this->outputEmail = config('scheduler.output_email') ?? $this->askForOutputEmail();
+        $this->environments = config('cli-scheduler.environments') ?: $this->askForEnvironments();
+        $this->withoutOverlapping = config('cli-scheduler.without_overlapping') ?? $this->askIfTaskShouldRunWithoutOverlapping();
+        $this->onOneServer = config('cli-scheduler.on_one_server') ?? $this->askIfTaskShouldRunOnOneServer();
+        $this->inMaintenanceMode = config('cli-scheduler.in_maintenance_mode') ?? $this->askIfTaskShouldRunInMaintenanceMode();
+        $this->runInBackground = config('cli-scheduler.run_in_background') ?? $this->askIfTaskShouldRunInBackground();
+        $this->outputPath = config('cli-scheduler.output_path') ?? $this->askForOutputFilePath();
+        $this->outputEmail = config('cli-scheduler.output_email') ?? $this->askForOutputEmail();
 
         $scheduledTask = $this->createTask();
         $this->generateTable($scheduledTask);

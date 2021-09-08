@@ -13,7 +13,7 @@ class CreateScheduledTasksTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('scheduler.table'), function (Blueprint $table) {
+        Schema::create(config('cli-scheduler.table'), function (Blueprint $table) {
             $table->id();
             $table->string('type');
             $table->string('task');
@@ -40,6 +40,6 @@ class CreateScheduledTasksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(config('scheduler.table'));
+        Schema::dropIfExists(config('cli-scheduler.table'));
     }
 }

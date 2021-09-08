@@ -24,7 +24,7 @@ class ScheduledTask extends Model
     {
         parent::__construct($attributes);
 
-        $this->table = config('scheduler.table');
+        $this->table = config('cli-scheduler.table');
     }
 
     /**
