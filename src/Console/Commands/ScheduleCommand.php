@@ -9,11 +9,6 @@ abstract class ScheduleCommand extends Command
 {
     protected ScheduledTaskRepositoryInterface $repository;
 
-    /**
-     * Create a new command instance.
-     *
-     * @param \Koomai\CliScheduler\Contracts\ScheduledTaskRepositoryInterface $repository
-     */
     public function __construct(ScheduledTaskRepositoryInterface $repository)
     {
         parent::__construct();

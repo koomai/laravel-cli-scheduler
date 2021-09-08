@@ -9,10 +9,9 @@ use Koomai\CliScheduler\Enums\TaskType;
 
 trait ValidatesInput
 {
-    /** @var array */
-    private $errors = [];
+    private array $errors = [];
 
-    private function validate(array $options)
+    private function validate(array $options): bool
     {
         [
             'type' => $type,

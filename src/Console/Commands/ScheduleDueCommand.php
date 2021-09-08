@@ -7,24 +7,13 @@ use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Str;
 use Koomai\CliScheduler\Contracts\ScheduledTaskRepositoryInterface;
+use Koomai\CliScheduler\ScheduledTask;
 
 class ScheduleDueCommand extends ScheduleCommand
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'schedule:due';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'List all scheduled tasks that are due';
-
-    private $headers = [
+    private array $headers = [
         'Id',
         'Type',
         'Task',
@@ -33,11 +22,7 @@ class ScheduleDueCommand extends ScheduleCommand
         'Next due',
         'Environments',
     ];
-
-    /**
-     * @var Schedule
-     */
-    private $schedule;
+    private Schedule $schedule;
 
     /**
      * Create a new command instance.
@@ -52,11 +37,6 @@ class ScheduleDueCommand extends ScheduleCommand
         $this->schedule = $schedule;
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         if (empty($this->schedule->events())) {
@@ -77,36 +57,22 @@ class ScheduleDueCommand extends ScheduleCommand
                 'due' => $event->nextRunDate()->format(config('scheduler.date_format')),
                 'environments' => implode(', ', $event->environments),
             ];
-        });
+        })->toArray();
 
         $this->table($this->headers, $eventsDue, 'box');
     }
 
-    /**
-     * @param \Illuminate\Console\Scheduling\Event $event
-     *
-     * @return \Koomai\CliScheduler\ScheduledTask|null
-     */
-    private function mapEventToScheduledTask(Event $event)
+    private function mapEventToScheduledTask(Event $event): ?ScheduledTask
     {
-        $task = $this->parseTaskFromEvent($event);
-
-        return $this->repository->findByTaskAndCronSchedule($task, $event->expression);
+        return $this->repository->findByTaskAndCronSchedule($this->parseTaskFromEvent($event), $event->expression);
     }
 
-    /**
-     * @param \Illuminate\Console\Scheduling\Event $event
-     *
-     * @return string
-     */
     private function parseTaskFromEvent(Event $event): string
     {
         if ($event instanceof CallbackEvent) {
-            $task = $event->getSummaryForDisplay();
-        } else {
-            $task = Str::after($event->command, "'artisan' ");
+            return $event->getSummaryForDisplay();
         }
 
-        return $task;
+        return Str::after($event->command, "'artisan' ");
     }
 }

@@ -14,11 +14,6 @@ class ScheduleAddCommand extends ScheduleCommand
     use BuildsScheduledTasksTable;
     use ValidatesInput;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'schedule:add {--type= : [Required] The type of scheduled task. Options: job or command}
                 {--task= : [Required] Command with arguments/options or fully qualified Jobs classname }
                 {--description= : Scheduled task description in 30 characters}
@@ -33,37 +28,26 @@ class ScheduleAddCommand extends ScheduleCommand
                 {--output-path= : Add path to file where output should be sent to}
                 {--append-output : Set flag if the output should be appended to the file}
                 {--output-email= : Add email address if output should be sent via email}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Add an artisan command or a job as scheduled task';
-
-    private $type;
-    private $task;
-    private $taskDescription;
-    private $cron;
-    private $timezone;
-    private $queue;
-    private $environments;
+    private ?string $type;
+    private ?string $task;
+    private ?string $taskDescription;
+    private ?string $cron;
+    private ?string $timezone;
+    private ?string $queue;
+    private array $environments;
+    private ?string $outputPath;
+    private ?string $outputEmail;
     private $withoutOverlapping;
     private $onOneServer;
     private $inMaintenanceMode;
     private $runInBackground;
-    private $outputPath;
     private $appendOutput = false;
-    private $outputEmail;
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
-     * @throws \Koomai\Constants\InvalidConstantException
-     * @throws \ReflectionException
      */
-    public function handle()
+    public function handle(): int
     {
         if ($this->option('type') && $this->option('task') && $this->option('cron')) {
             return $this->handleWithoutPrompts();
@@ -74,11 +58,8 @@ class ScheduleAddCommand extends ScheduleCommand
 
     /**
      * Execute the console command by parsing options
-     *
-     * @return mixed
-     * @throws \Koomai\Constants\InvalidConstantException
      */
-    private function handleWithoutPrompts()
+    private function handleWithoutPrompts(): int
     {
         if (! $this->validate($this->options())) {
             foreach ($this->errors as $error) {
@@ -109,15 +90,14 @@ class ScheduleAddCommand extends ScheduleCommand
 
         $scheduledTask = $this->createTask();
         $this->generateTable($scheduledTask);
+
+        return 0;
     }
 
     /**
      * Execute the console command by prompting the user for options
-     *
-     * @return mixed
-     * @throws \ReflectionException
      */
-    private function handleWithPrompts()
+    private function handleWithPrompts(): int
     {
         $this->type = $this->choice(trans('scheduler::questions.type'), TaskType::getValues());
 
@@ -142,6 +122,8 @@ class ScheduleAddCommand extends ScheduleCommand
 
         $scheduledTask = $this->createTask();
         $this->generateTable($scheduledTask);
+
+        return 0;
     }
 
     private function askForTask(): ?string
@@ -266,9 +248,6 @@ class ScheduleAddCommand extends ScheduleCommand
         return null;
     }
 
-    /**
-     * @return \Koomai\CliScheduler\ScheduledTask
-     */
     private function createTask(): ScheduledTask
     {
         return $this->repository->create(

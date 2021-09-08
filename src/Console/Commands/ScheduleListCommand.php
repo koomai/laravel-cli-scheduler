@@ -8,25 +8,9 @@ class ScheduleListCommand extends ScheduleCommand
 {
     use BuildsScheduledTasksTable;
 
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'schedule:list';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature = 'schedule:list-all';
     protected $description = 'List all scheduled tasks';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
         $tasks = $this->repository->all();
