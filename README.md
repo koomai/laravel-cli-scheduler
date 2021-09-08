@@ -46,7 +46,9 @@ return [
 
 ### List scheduled tasks (in database)
 
-`php artisan schedule:list`
+`php artisan schedule:list-all`
+
+*Note*: This command has been renamed from `list` to `list-all` to avoid collision with the framework's `schedule:list` command.
 
 ### Show/Delete a scheduled task (in database)
 
