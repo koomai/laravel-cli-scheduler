@@ -22,7 +22,7 @@ class TestCase extends Orchestra
         // Setup default database as testing to use sqlite :memory:
         $app['config']->set('database.default', 'testing');
         // Set table name
-        $app['config']->set('scheduler.table', 'scheduled_tasks');
+        $app['config']->set('cli-scheduler.table', 'scheduled_tasks');
     }
 
     /**
