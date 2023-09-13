@@ -33,7 +33,7 @@ class ScheduleAddCommandWithPromptAndNoDefaultConfigurationTest extends TestCase
     public function should_prompt_for_all_questions_and_save_artisan_command_task()
     {
         $data = [
-            'type' => TaskType::COMMAND,
+            'type' => TaskType::COMMAND->value,
             'task' => 'inspire --no-interaction',
             'description' => 'Some description',
             'cron' => '* * * * *',
