@@ -18,7 +18,7 @@ class ScheduleAddCommandWithPromptAndDefaultConfigurationTest extends TestCase
     public function shouldNotAskForEnvironmentsIfAlreadyDefinedInConfig()
     {
         $this->artisan('schedule:add')
-            ->expectsQuestion(trans('cli-scheduler::questions.type'), TaskType::COMMAND)
+            ->expectsQuestion(trans('cli-scheduler::questions.type'), TaskType::COMMAND->value)
             ->expectsQuestion(trans('cli-scheduler::questions.task.artisan'), 'schedule:show')
             ->expectsQuestion(trans('cli-scheduler::questions.description'), 'Some description')
             ->expectsQuestion(trans('cli-scheduler::questions.cron'), '* * * * *')

@@ -2,10 +2,13 @@
 
 namespace Koomai\CliScheduler\Enums;
 
-use BenSampo\Enum\Enum;
-
-final class TaskType extends Enum
+enum TaskType: string
 {
-    public const COMMAND = 'Command';
-    public const JOB = 'Job';
+    case COMMAND = 'Command';
+    case JOB = 'Job';
+
+    public static function getValues(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }
